@@ -44,12 +44,12 @@ public class TokenBusiness {
         return userId;
     }
 
-    public TokenResponse reissue(String refreshToken) {
+   /* public TokenResponse reissue(String refreshToken) {
 
         //1.리프레쉬 토큰 유효성 검증 및 userId 추출
         Long userId= tokenService.getUserIdFromToken(refreshToken);
         //2.레디스에 저장된 리프레시 토큰
         String redisToken = tokenService.getRefreshTokenFromRedis(userId);
         `
-    }
+    }*/
 }
