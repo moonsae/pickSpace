@@ -12,10 +12,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/host")
@@ -28,7 +26,8 @@ public class StudyRoomHostApiController {
             @RequestBody Api<StudyRoomRegisterRequest> request
     ){
         var req = request.getBody();
-        var response = studyRoomBusiness.register(req);
+        Long studyGroupId = req.getStudyGroupId();
+        var response = studyRoomBusiness.register(studyGroupId,req);
         return Api.OK(response);
     }
 }

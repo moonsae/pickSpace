@@ -42,11 +42,9 @@ public class ReservationService {
         StudyRoomEntity studyRoom = studyRoomRepository.findById(studyRoomId)
                 .orElseThrow(() -> new ApiException(RoomErrorCode.ROOM_ERROR_CODE));
         // 해당 스터디룸이 속한 업체(공간) 조회
-        SpaceGroupEntity spaceGroup = spaceGroupRepository.findByIdWithOperatingDays(studyRoom.getStudyGroupId())
+        SpaceGroupEntity spaceGroup = spaceGroupRepository.findByIdWithOperatingDays(studyRoom.getSpaceGroup().getId())
                 .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT, "업체 정보가 존재하지 않습니다."));
         ;
-
-
         LocalDate reservationDate = reservationEntity.getReservationDate();
         Integer startSlot = reservationEntity.getStartSlot();
         Integer endSlot = reservationEntity.getEndSlot();
@@ -96,7 +94,7 @@ public class ReservationService {
                 .orElseThrow(() -> new ApiException(RoomErrorCode.ROOM_ERROR_CODE));
 
         // 2. 스터디룸의 소속 업체 조회 → 운영 요일/시간
-        SpaceGroupEntity spaceGroup = spaceGroupRepository.findByIdWithOperatingDays(studyRoom.getStudyGroupId())
+        SpaceGroupEntity spaceGroup = spaceGroupRepository.findByIdWithOperatingDays(studyRoom.getSpaceGroup().getId())
                 .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT, "업체 정보가 존재하지 않습니다."));
 
         if (!spaceGroup.getOperatingDays().contains(date.getDayOfWeek())) {

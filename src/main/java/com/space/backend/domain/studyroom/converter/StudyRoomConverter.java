@@ -20,7 +20,6 @@ public class StudyRoomConverter {
         return Optional.ofNullable(request)
                 .map(it->{
                     return StudyRoomEntity.builder()
-                            .studyGroupId(request.getStudyGroupId())
                             .name(request.getName())
                             .description(request.getDescription())
                             .maxCapacity(request.getMaxCapacity())
@@ -35,7 +34,7 @@ public class StudyRoomConverter {
                 .map(it->{
                     return StudyRoomResponse.builder()
                             .id(studyRoomEntity.getId())
-                            .studyGroupId(studyRoomEntity.getStudyGroupId())
+                            .studyGroupId(studyRoomEntity.getSpaceGroup().getId())
                             .name(studyRoomEntity.getName())
                             .description(studyRoomEntity.getDescription())
                             .maxCapacity(studyRoomEntity.getMaxCapacity())

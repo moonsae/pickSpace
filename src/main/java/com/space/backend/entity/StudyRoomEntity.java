@@ -1,7 +1,6 @@
 package com.space.backend.entity;
 
 import com.space.backend.entity.enums.RoomsStatus;
-import com.space.backend.entity.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,8 +18,9 @@ public class StudyRoomEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long studyGroupId;
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private SpaceGroupEntity spaceGroup;
 
     @Column(length = 100, nullable = false)
     private String name;
@@ -47,3 +47,4 @@ public class StudyRoomEntity {
 
     private LocalDateTime registeredAt;
 }
+

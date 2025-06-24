@@ -4,6 +4,7 @@ import com.space.backend.common.error.ErrorCode;
 import com.space.backend.common.error.RoomErrorCode;
 import com.space.backend.common.exception.ApiException;
 import com.space.backend.domain.studyroom.dto.StudyRoomResponse;
+import com.space.backend.elastic.StudyRoomSearchService;
 import com.space.backend.entity.SpaceGroupEntity;
 import com.space.backend.entity.StudyRoomEntity;
 import com.space.backend.entity.enums.RoomsStatus;
@@ -21,15 +22,25 @@ import java.util.Optional;
 @Service
 public class StudyRoomService {
     private final StudyRoomRepository studyRoomRepository;
+    private final SpaceGroupRepository spaceGroupRepository;
+    private final StudyRoomSearchService studyRoomSearchService;
 
-    public StudyRoomEntity register(StudyRoomEntity studyRoomEntity){
+    public StudyRoomEntity register(Long spaceGroupId,StudyRoomEntity studyRoomEntity){
+
+        SpaceGroupEntity spaceGroup = spaceGroupRepository.findById(spaceGroupId)
+                .orElseThrow(()->new ApiException(RoomErrorCode.NOT_FOUND_SPACE));
         return Optional.ofNullable(studyRoomEntity)
                 .map(it-> {
+                    it.setSpaceGroup(spaceGroup);
                     it.setRegisteredAt(LocalDateTime.now());
                     it.setStatus(RoomsStatus.PENDING);
                     it.setAvgRating(BigDecimal.valueOf(0.00));
                     it.setReviewCount(0);
-                    return studyRoomRepository.save(it);
+                    StudyRoomEntity saved = studyRoomRepository.save(it);
+                    if (saved.getStatus() == RoomsStatus.APPROVED) {
+                        studyRoomSearchService.indexStudyRoom(saved);
+                    }
+                    return saved;
                 })
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }
@@ -42,11 +53,18 @@ public class StudyRoomService {
 
     public StudyRoomEntity updateStatus(Long roomId, RoomsStatus status) {
         return studyRoomRepository.findById(roomId)
-                .map(room->{
+                .map(room -> {
                     room.setStatus(status);
-                    return studyRoomRepository.save(room);
+                    StudyRoomEntity saved = studyRoomRepository.save(room);
+
+                    //승인 상태로 바뀌었을 때 색인 등록
+                    if (status == RoomsStatus.APPROVED) {
+                        studyRoomSearchService.indexStudyRoom(saved);
+                    }
+
+                    return saved;
                 })
-                .orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT));
+                .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT));
     }
 
     public List<StudyRoomEntity> findAllApproved() {
@@ -55,7 +73,9 @@ public class StudyRoomService {
     }
 
     public List<StudyRoomEntity> findBySpaceGroup(Long spaceId) {
-        var list = studyRoomRepository.findAllByStudyGroupIdAndStatusOrderByRegisteredAtDesc(spaceId,RoomsStatus.APPROVED);
-        return list;
+        var spaceGroup = spaceGroupRepository.findById(spaceId)
+                .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT, "해당 업체가 존재하지 않습니다."));
+
+        return studyRoomRepository.findAllBySpaceGroupAndStatusOrderByRegisteredAtDesc(spaceGroup, RoomsStatus.APPROVED);
     }
 }

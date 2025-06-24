@@ -5,14 +5,16 @@ import com.space.backend.entity.StudyRoomEntity;
 import com.space.backend.entity.enums.RoomsStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public interface StudyRoomRepository extends JpaRepository<StudyRoomEntity, Long> {
     List<StudyRoomEntity> findAllByStatusOrderByRegisteredAtDesc(RoomsStatus status);
 
-    List<StudyRoomEntity> findAllByStudyGroupIdAndStatusOrderByRegisteredAtDesc(Long studyGroupId, RoomsStatus status);
-
+    List<StudyRoomEntity> findAllBySpaceGroupAndStatusOrderByRegisteredAtDesc(SpaceGroupEntity spaceGroup, RoomsStatus status);
 
     Optional<StudyRoomEntity> findGroupById(Long studyGroupId);
+
+    List<StudyRoomEntity> findAllByStatus(RoomsStatus roomsStatus);
 }

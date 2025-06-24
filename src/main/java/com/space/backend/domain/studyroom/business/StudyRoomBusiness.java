@@ -10,6 +10,8 @@ import com.space.backend.domain.studyroom.dto.StudyRoomRegisterRequest;
 import com.space.backend.domain.studyroom.dto.StudyRoomResponse;
 import com.space.backend.domain.studyroom.dto.StudyRoomStatusRequest;
 import com.space.backend.domain.studyroom.service.StudyRoomService;
+import com.space.backend.elastic.StudyRoomDocument;
+import com.space.backend.elastic.StudyRoomSearchService;
 import com.space.backend.entity.SpaceGroupEntity;
 import lombok.RequiredArgsConstructor;
 
@@ -21,10 +23,11 @@ import java.util.stream.Collectors;
 public class StudyRoomBusiness {
     private final StudyRoomService studyRoomService;
     private final StudyRoomConverter studyRoomConverter;
+    private final StudyRoomSearchService studyRoomSearchService;
 
-    public StudyRoomResponse register(StudyRoomRegisterRequest request){
+    public StudyRoomResponse register(Long studyGroupId,StudyRoomRegisterRequest request){
         var entity = studyRoomConverter.toEntity(request);
-        var newEntity = studyRoomService.register(entity);
+        var newEntity = studyRoomService.register(studyGroupId,entity);
         var response = studyRoomConverter.toResponse(newEntity);
         return response;
 
@@ -49,7 +52,7 @@ public class StudyRoomBusiness {
     public List<StudyRoomResponse> getAllApproved() {
         var list = studyRoomService.findAllApproved();
         return list.stream()
-                .map(room->studyRoomConverter.toResponse(room))
+                .map(studyRoomConverter::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -58,5 +61,9 @@ public class StudyRoomBusiness {
         return list.stream()
                 .map(studyRoomConverter::toResponse)
                 .collect(Collectors.toList());
+    }
+    public List<StudyRoomDocument> search(String keyword){
+        var list = studyRoomSearchService.searchStudyRoom(keyword);
+        return list;
     }
 }

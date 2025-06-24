@@ -10,7 +10,8 @@ public enum RoomErrorCode implements ErrorCodeIfs{
     ALREADY_RESERVE(400, 2021, "이미 예약된 방입니다"),
     INVALID_TIME_SLOT(400,2022, "잘못된 시간 설정입니다."),
     INVALID_RESERVATION_DATE(400,2023, "예약은 최소 하루 전에만 가능합니다."),
-    NOT_OPERATING_DAY(400,2024, "해당 요일은 영업하지 않습니다.");
+    NOT_OPERATING_DAY(400,2024, "해당 요일은 영업하지 않습니다."),
+    NOT_FOUND_SPACE(400,2025, "존재하지 않는 업체입니다.");
 
     private final Integer httpStatusCode;
     private final Integer errorCode;

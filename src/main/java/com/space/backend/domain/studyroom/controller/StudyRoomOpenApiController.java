@@ -5,6 +5,7 @@ import com.space.backend.common.api.Api;
 import com.space.backend.domain.studyroom.business.StudyRoomBusiness;
 import com.space.backend.domain.studyroom.dto.StudyRoomResponse;
 import com.space.backend.domain.studyroom.dto.StudyRoomStatusRequest;
+import com.space.backend.elastic.StudyRoomDocument;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +29,16 @@ public class StudyRoomOpenApiController {
     @GetMapping("/{spaceId}")
     public Api<List<StudyRoomResponse>> getBySpaceGroup(
             @PathVariable Long spaceId
-    ){
+    ) {
         var responseList = studyRoomBusiness.findBySpaceGroup(spaceId);
         return Api.OK(responseList);
+    }
+
+    //엘라스틱 서치로 스터디룸 조회
+    @GetMapping("/search")
+    public Api<List<StudyRoomDocument>> searchStudyRooms(@RequestParam String keyword) {
+        List<StudyRoomDocument> result = studyRoomBusiness.search(keyword);
+        return Api.OK(result);
     }
 
 }

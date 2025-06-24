@@ -25,7 +25,28 @@ services:
     volumes:
       - C:\TEMP\redis:/var/lib/redis
     command: [ "redis-server", "--requirepass", "root1234!!" ]
-
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./es-data:/usr/share/elasticsearch/data  # 데이터 저장
+      - ./dict:/usr/share/elasticsearch/config/dict  # 사용자 사전 마운트
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.3
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+volumes:
+  elastic_data:
 
 #  user-service:
 #    image: user-service-image

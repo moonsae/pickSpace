@@ -6,18 +6,9 @@ import com.space.backend.common.error.TokenErrorCode;
 import com.space.backend.common.exception.ApiException;
 import com.space.backend.domain.token.business.TokenBusiness;
 import com.space.backend.domain.token.dto.TokenResponse;
-import com.space.backend.domain.user.business.UserBusiness;
-import com.space.backend.domain.user.dto.UserLoginRequest;
-import com.space.backend.domain.user.dto.UserRegisterRequest;
-import com.space.backend.domain.user.dto.UserResponse;
-import com.space.backend.entity.ReservationEntity;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TokenApiController {
     private final TokenBusiness tokenBusiness;
 
-    @PostMapping("/reauth")
-    public Api<TokenResponse> reAuth(HttpServletRequest request){
+    @PostMapping("/reissue")
+    public Api<TokenResponse> reissue(HttpServletRequest request){
         String authHeader = request.getHeader("Authorization");
         // 1. Authorization 헤더 유효성 검사
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -41,7 +32,6 @@ public class TokenApiController {
         TokenResponse response  = tokenBusiness.reissue(refreshToken);
         return Api.OK(response);
     }
-
 
 
 }

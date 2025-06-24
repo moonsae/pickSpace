@@ -26,7 +26,6 @@ public class ReservationEntity {
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private StudyRoomEntity studyRoom;
 
-
     private LocalDate reservationDate;
 
     @Column(nullable = false)

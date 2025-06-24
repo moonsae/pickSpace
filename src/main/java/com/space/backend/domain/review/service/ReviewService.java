@@ -80,7 +80,7 @@ public class ReviewService {
                 .orElseThrow(() -> new ApiException(ReviewErrorCode.REVIEW_ERROR_CODE));
 
         StudyRoomEntity studyRoom = review.getStudyRoom();
-        Long studyGroupId = studyRoom.getStudyGroupId();
+        Long studyGroupId = studyRoom.getSpaceGroup().getId();
         SpaceGroupEntity spaceGroup = spaceGroupRepository.findById(studyGroupId)
                 .orElseThrow(() -> new ApiException(RoomErrorCode.ROOM_ERROR_CODE));
         if (!spaceGroup.getHostId().equals(hostId)) {
