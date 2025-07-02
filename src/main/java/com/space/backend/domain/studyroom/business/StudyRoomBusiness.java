@@ -13,6 +13,7 @@ import com.space.backend.domain.studyroom.service.StudyRoomService;
 import com.space.backend.elastic.StudyRoomDocument;
 import com.space.backend.elastic.StudyRoomSearchService;
 import com.space.backend.entity.SpaceGroupEntity;
+import com.space.backend.entity.StudyRoomEntity;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -65,5 +66,10 @@ public class StudyRoomBusiness {
     public List<StudyRoomDocument> search(String keyword){
         var list = studyRoomSearchService.searchStudyRoom(keyword);
         return list;
+    }
+    public List<StudyRoomEntity> searchWithJoin(String keyword) {
+        return studyRoomService.searchWithJoin(
+                keyword
+        );
     }
 }

@@ -78,4 +78,9 @@ public class StudyRoomService {
 
         return studyRoomRepository.findAllBySpaceGroupAndStatusOrderByRegisteredAtDesc(spaceGroup, RoomsStatus.APPROVED);
     }
+    public List<StudyRoomEntity> searchWithJoin(String keyword) {
+        return studyRoomRepository.searchWithJoin(
+                keyword
+        );
+    }
 }
