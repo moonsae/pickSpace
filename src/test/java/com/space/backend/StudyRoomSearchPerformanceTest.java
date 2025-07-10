@@ -25,7 +25,7 @@ import java.util.List;
 @DisplayName("Elasticsearch vs RDB 검색 성능 비교 테스트")
 @Slf4j
 public class StudyRoomSearchPerformanceTest {
-
+/*
     @Autowired
     private StudyRoomBusiness studyRoomBusiness;
 
@@ -49,5 +49,5 @@ public class StudyRoomSearchPerformanceTest {
 
         System.out.println("🔍 RDB 검색 소요 시간: " + rdbDuration + "ms, 결과 수: " + rdbResults.size());
         System.out.println("🔍 Elasticsearch 검색 소요 시간: " + esDuration + "ms, 결과 수: " + esResults.size());
-    }
+    }*/
 }

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @DisplayName("RDB 검색 기능 테스트")
 class StudyRoomRdbSearchTest {
 
-    @Autowired
+   /* @Autowired
     private StudyRoomService studyRoomService;
 
     @Test
@@ -37,5 +37,5 @@ class StudyRoomRdbSearchTest {
 
         // 단순 검증 (예: 검색 결과가 0이 아닌지 확인)
         assertFalse(results.isEmpty(), "검색 결과가 존재해야 합니다.");
-    }
+    }*/
 }

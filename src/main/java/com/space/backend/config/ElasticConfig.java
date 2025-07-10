@@ -22,13 +22,13 @@ public class ElasticConfig{
                 new HttpHost("localhost", 9200, "http")
         ).build();
     }*/
-    @Value("${elasticsearch.host}")
+    @Value("${spring.elasticsearch.host}")
     private String esHost;
 
-    @Value("${elasticsearch.port:9200}")
+    @Value("${spring.elasticsearch.port}")
     private int esPort;
 
-    @Value("${elasticsearch.scheme:http}")
+    @Value("${spring.elasticsearch.scheme}")
     private String esScheme;
 
     @Bean

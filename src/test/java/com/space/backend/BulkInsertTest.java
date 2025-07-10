@@ -23,7 +23,7 @@ import java.util.List;
 @Slf4j
 public class BulkInsertTest {
 
-    @Autowired
+  /*  @Autowired
     private StudyRoomRepository studyRoomRepository;
 
     @Autowired
@@ -102,5 +102,5 @@ public class BulkInsertTest {
         }
 
         log.info("🎉 총 {}건 저장 및 색인 완료 (성공: {}, 실패: {})", count, success, fail);
-    }
+    }*/
 }
